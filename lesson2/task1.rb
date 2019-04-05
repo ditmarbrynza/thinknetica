@@ -1,20 +1,18 @@
 year = {
-  "January" => 31, 
-  "February" => 28, 
-  "March" => 29, 
-  "April" => 30, 
-  "May" => 31,
-  "June" => 28,
-  "July" => 31,
-  "August" => 30,
-  "September" => 30,
-  "October" => 31,
-  "November" => 29,
-  "December" => 31
+  january: 31, 
+  february: 28, 
+  march: 29, 
+  april: 30, 
+  may: 31,
+  june: 28,
+  july: 31,
+  august: 30,
+  september: 30,
+  october: 31,
+  november: 29,
+  december: 31
 }
 
-year.each do |key, value|
-  if value == 30
-    puts "#{key}"
-  end
+year.each do |month, days|
+  puts month if days == 30
 end

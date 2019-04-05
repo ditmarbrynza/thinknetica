@@ -1,4 +1,4 @@
-year = [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+year = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 
 puts "Ввведи число:"
 dd = gets.to_i
@@ -8,19 +8,10 @@ puts "Ввведи год:"
 yy = gets.to_i
 
 if yy % 4 == 0 && yy % 100 != 0 || yy % 400 == 0
-  year[2] = 29
+  year[1] = 29
 end
 
-sum = 0
-i = 1
-while i <= mm  do
-  if i == mm
-    sum += dd
-    break
-  end 
-     
-  sum += year[i]
-  i += 1
-end
-
+sum = dd + year.take(mm - 1).reduce(0, :+)
+# puts "xx #{year.take(mm - 1)}"
+# puts year.take(mm - 1).reduce(0, :+)
 puts sum

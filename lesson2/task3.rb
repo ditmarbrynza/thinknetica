@@ -1,9 +1,8 @@
-fib = []
-fib.push(0)
-fib.push(1)
-
-for i in 2..100
-  fib[i] = fib[i-1] + fib[i-2]
+fib = [0, 1]
+loop do
+  next_fib = fib[-1] + fib[-2]
+  break if next_fib >= 100
+  fib << next_fib
 end 
 
 puts "#{fib}"

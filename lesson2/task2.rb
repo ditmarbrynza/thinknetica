@@ -1,8 +1,2 @@
-array = []
-for i in 10..100
-  if i % 5 == 0
-    array.push(i)
-  end 
-end
-
-puts "#{array}"
+array = (10..100).step(5).to_a
+puts array
