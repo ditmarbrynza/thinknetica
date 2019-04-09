@@ -1,5 +1,4 @@
 purchase = {}
-product_name = ""
 loop do
   puts "Введите название товара:"
   product_name = gets.chomp

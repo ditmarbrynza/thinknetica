@@ -1,24 +1,17 @@
 class Car
   attr_accessor :color
-  attr_reader :drivers
-  attr_reader :number
+  attr_reader :number, :door_title
 
   def initialize(number)
     @number = number
     @color = 'white'
-    @drivers = []
   end
 
   def beep
     puts 'beep beep'
   end
-  
-  def add_driver(driver)
-    @drivers << driver
-  end
 
-  def show_drivers
-    @drivers.each { |driver| puts driver.name }
+  def change_door_title(driver)
+    @door_title = driver.name if driver.cars.include?(self)
   end
-
-end
+end 
