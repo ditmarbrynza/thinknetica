@@ -8,7 +8,7 @@ class Station
 
 	# Может принимать поезда (по одному за раз)
 	def take_train(train)
-    @trains_on_station << train
+		@trains_on_station << train
 	end
 
 	# Может возвращать список всех поездов на станции, находящиеся в текущий момент
