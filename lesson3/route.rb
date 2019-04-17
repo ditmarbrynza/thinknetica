@@ -7,20 +7,22 @@ class Route
   end
 
 # Может добавлять промежуточную станцию в список
-  def add_station(transit_station)
-    @station.insert(@station.length-1, transit_station)
+  def add_station(station)
+    @station.insert(@station.length-1, station)
   end
 
 # Может удалять промежуточную станцию из списка
-  def del_station(transit_station)
-    @station.delete(transit_station)
+  def del_station(station)
+    @station.delete(station)
   end
 
 # Может выводить список всех станций по-порядку от начальной до конечной
   def show_stations
-    @station.each do |station|
-      puts station
+    @station.each do | station |
+      puts station.name
     end
   end
 
 end
+
+# route0 = Route.new(st0, st1)
