@@ -1,6 +1,6 @@
 class Station
 	attr_reader :name
-	# Имеет название, которое указывается при ее создании 
+	# Имеет название, которое указывается при ее создании
 	def initialize(name)
 		@name = name
 		@trains_on_station = []
@@ -33,7 +33,7 @@ class Station
 				quantity += 1
 			end
 		end
-		
+
 		puts quantity
 
 		train_buf.each do | train |
