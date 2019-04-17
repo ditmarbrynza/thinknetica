@@ -1,4 +1,7 @@
 class Route
+
+  attr_reader :station
+
 # Имеет начальную и конечную станцию, а также список промежуточных станций. Начальная и конечная станции указываютсся при создании маршрута, а промежуточные могут добавляться между ними.
   def initialize(first_station, last_station)
     @station = []
@@ -25,4 +28,4 @@ class Route
 
 end
 
-# route0 = Route.new(st0, st1)
+# route0 = Route.new(st0, st3)

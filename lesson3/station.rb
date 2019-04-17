@@ -45,8 +45,12 @@ class Station
   # Может отправлять поезда (по одному за раз, при этом, поезд удаляется из списка поездов, находящихся на станции).
   def send_train(train)
     @trains_on_station.delete(train)
+    puts "поезд #{train.number} отправился со станции #{self.name}"
   end
 
 end
 
 st0 = Station.new("st0")
+st1 = Station.new("st1")
+st2 = Station.new("st2")
+st3 = Station.new("st3")
