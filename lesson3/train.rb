@@ -14,7 +14,7 @@ class Train
 
 # Может набирать скорость
   def gas(speed)
-    @speed = speed if speed > @speed && speed >= 1
+    @speed += speed if speed.positive?
   end
 
 # Может тормозить (сбрасывать скорость до нуля)
@@ -28,56 +28,45 @@ class Train
   end
 
   def del_wagons
-    @wagons -= 1 if @speed == 0
+    @wagons -= 1 if @speed == 0 && @wagons > 1
   end
 
 # Может принимать маршрут следования (объект класса Route). 
 # При назначении маршрута поезду, поезд автоматически помещается на первую станцию в маршруте.
 
-  def take_route(route)
-    @train_route = route
-    @train_route.station[0].take_train(self)
+  def route(route)
+    @route = route
+    @route.stations[0].take_train(self)
     @current_station = 0
   end
 
 # Может перемещаться между станциями, указанными в маршруте. Перемещение возможно вперед и назад, но только на 1 станцию за раз.
   def move_forward
-    return if @current_station == @train_route.station.length-1
-    @train_route.station[@current_station].send_train(self)
+    return unless next_station
+    current_station.send_train(self)
+    next_station.take_train(self)
     @current_station += 1
-    @train_route.station[@current_station].take_train(self)
   end
 
   def move_back
-    return if @current_station == 0
-    @train_route.station[@current_station].send_train(self)
+    return unless previous_station
+    current_station.send_train(self)
+    previous_station.take_train(self)
     @current_station -= 1
-    @train_route.station[@current_station].take_train(self)
   end
 
 # Возвращать предыдущую станцию, текущую, следующую, на основе маршрута
   def current_station
-    puts @train_route.station[@current_station].name
+    # puts "текущая станция: #{@route.stations[@current_station].name}"
+    @route.stations[@current_station]
   end
 
   def next_station
-    if @current_station == @train_route.station.length-1
-      puts @train_route.station[@current_station-1].name
-    else
-      puts @train_route.station[@current_station+1].name
-    end
+    @route.stations[@current_station + 1]
   end
 
   def previous_station
-    if @current_station == 0
-      puts @train_route.station[@current_station+1].name
-    else
-      puts @train_route.station[@current_station-1].name
-    end
+    @route.stations[@current_station - 1] if @current_station.positive?
   end
 
 end
-
-tr0 = Train.new("TR0", "passenger", 10)
-tr1 = Train.new("TR1", "passenger", 120)
-tr2 = Train.new("TR2", "cargo", 100)
