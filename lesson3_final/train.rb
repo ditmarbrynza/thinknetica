@@ -4,6 +4,7 @@ class Train
 # Может возвращать количество вагонов
 
   attr_reader :number, :type, :wagons, :speed
+  attr_accessor :route
 
   def initialize(number, type, wagons)
     @number = number
@@ -23,11 +24,11 @@ class Train
   end
 
 # Может прицеплять/отцеплять вагоны (по одному вагону за операцию, метод просто увеличивает или уменьшает количество вагонов). Прицепка/отцепка вагонов может осуществляться только если поезд не движется.
-  def add_wagons
+  def add_wagon
     @wagons += 1 if @speed == 0
   end
 
-  def del_wagons
+  def del_wagon
     @wagons -= 1 if @speed == 0 && @wagons > 1
   end
 

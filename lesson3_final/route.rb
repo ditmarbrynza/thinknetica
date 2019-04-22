@@ -20,7 +20,7 @@ class Route
 
 # Может выводить список всех станций по-порядку от начальной до конечной
   def show_stations
-    @stations.each do | station |
+    @stations.each do |station|
       puts station.name
     end
   end
