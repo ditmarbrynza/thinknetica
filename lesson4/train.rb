@@ -1,7 +1,7 @@
 class Train 
 
   attr_reader :number, :wagons, :speed
-  attr_accessor :route
+  attr_writer :route
 
   def initialize(number)
     @number = number
@@ -28,7 +28,7 @@ class Train
     @wagons.delete(wagon)
   end
 
-  def route(route)
+  def route=(route)
     @route = route
     @route.stations[0].take_train(self)
     @current_station = 0
