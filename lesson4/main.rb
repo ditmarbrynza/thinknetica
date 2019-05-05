@@ -10,9 +10,9 @@ require_relative 'route'
 class Main
 
   def initialize
-    @stations = {}
-    @routes = {}
-    @trains = {}
+    @stations = []
+    @routes = []
+    @trains = []
     main_menu
   end 
 
@@ -21,16 +21,11 @@ class Main
       show_main_menu
       key = gets.to_i
       case key
-      when 1
-        stations_management
-      when 2
-        trains_management
-      when 3 
-        routes_management
+        when 1 then stations_management
+        when 2 then trains_management
+        when 3 then routes_management
       end
-
     end
-    
   end
 
   def show_main_menu
@@ -44,21 +39,10 @@ class Main
       stations_management_menu
       key = gets.to_i
       case key 
-      when 1
-        puts "Введите название станции: "
-        name = gets.chomp
-        @stations[name] = Station.new(name)
-        puts "Создана станция #{@stations[name].name}"
-      when 2
-        puts "Список всевозможных станций: "
-        @stations.each { |station_name, object| puts station_name}
-      when 3
-        station = get_station
-        if station 
-          @stations[station].trains.each {|train| puts "#{train.number}"}
-        end
-      when 0
-        break 
+        when 1 then create_station
+        when 2 then show_stations
+        when 3 then show_station_trains
+        when 0 then break
       end 
     end 
   end
@@ -69,24 +53,35 @@ class Main
     puts "3 - Просмотреть список поездов на станции"
     puts "0 - Выход"
   end
+  
+  def create_station
+    puts "Введите название станции: "
+    name = gets.chomp
+    @stations << Station.new(name)
+    puts "Создана станция #{name}"
+  end
+
+  def show_stations
+    puts "Список станций: "
+    show_collection(@stations)
+  end
+
+  def show_station_trains
+    station = select_from_collection(@stations)
+    puts "Поезда на станции #{station}:"
+    station.trains
+    #attention
+  end
 
   def trains_management
     loop do 
       trains_management_menu
       key = gets.to_i
       case key 
-      when 1
-        puts "Введите номер поезда: "
-        number = gets.chomp
-        @trains[number] = PassengerTrain.new(number)
-      when 2
-        puts "Введите номер поезда: "
-        number = gets.chomp
-        @trains[number] = CargoTrain.new(number)
-      when 3
-        train_management
-      when 0
-        break
+        when 1 then create_train(PassengerTrain)
+        when 2 then create_train(CargoTrain)
+        when 3 then train_management
+        when 0 then break
       end
     end
   end 
@@ -98,33 +93,51 @@ class Main
     puts "0 - Назад"
   end
 
+  def create_train(train_type)
+    puts "Введите номер поезда:"
+    number = gets.chomp
+    @trains << train_type.new(number)
+  end
+
   def train_management
     loop do
       train_management_menu
       key = gets.to_i
       case key 
-      when 1
-        train = get_train
-        @trains[train].add_wagon(CargoWagon.new) if @trains[train].attachable_wagon?(CargoWagon.new)
-        @trains[train].add_wagon(PassengerWagon.new) if @trains[train].attachable_wagon?(PassengerWagon.new) 
-      when 2
-        train = get_train
-        if train
-          puts "Список вагонов: #{@trains[train].show_wagons}" 
-          wagon = gets.chomp 
-          @trains[train].add_wagon(wagon)
-        end
-      when 3
-        train = get_train
-        @trains[train].move_forward if train
-      when 4
-        train = get_train
-        @trains[train].move_back if train
-      when 0
-        break 
+        when 1 then add_wagon
+        when 2 then del_wagon
+        when 3 then move_forward
+        when 4 then move_back
+        when 0 then break
       end
     end 
   end
+
+  def add_wagon
+    train = select_from_collection(@trains)
+    train.add_wagon(PassengerWagon.new) if train.attachable_wagon?(PassengerWagon.new)
+    train.add_wagon(CargoWagon.new) if train.attachable_wagon?(CargoWagon.new)
+  end
+
+  def del_wagon
+    train = select_from_collection(@trains)
+    wagon = select_from_collection(train.wagons)
+    train.del_wagon(wagon)
+  end 
+    
+  def move_forward
+    train = select_from_collection(@trains)
+    train.move_forward
+    puts "Поезд #{train.number} прибывает на станцию #{train.current_station}"
+    #attention
+  end
+
+  def move_back
+    train = select_from_collection(@trains)
+    train.move_back
+    puts "Поезд #{train.number} прибывает на станцию #{train.current_station}"
+    #attention
+  end 
 
   def train_management_menu
     puts "1 - Добавить вагон к поезду"
@@ -137,38 +150,13 @@ class Main
   def routes_management
     loop do 
       routes_management_menu
-
       key = gets.to_i 
       case key
-      when 1
-        puts "Введите первую станцию маршрута: "
-        first_station = gets.chomp
-        puts "Введите последнюю станцию маршрута: "
-        last_station = gets.chomp 
-        if @stations.has_key?(first_station) && @stations.has_key?(last_station)
-          route = first_station + " - " + last_station
-          @routes[route] = Route.new(@stations[first_station], @stations[last_station])
-          puts "Создан маршрут #{route}"
-        else 
-          puts "Введена неверная станция"
-        end
-      when 2
-        route = get_route
-        route_edit(route) if route 
-      when 3
-        route = get_route
-        if route
-          puts "Станции маршрута #{route} следующие: "
-          @routes[route].show_stations
-        end
-      when 4
-        route = get_route
-        if route 
-          train = get_train
-          @trains[train].route(@routes[route]) if train 
-        end
-      when 0
-        break 
+        when 1 then create_route
+        when 2 then edit_route
+        when 3 then show_routes_stations
+        when 4 then appoint_route
+        when 0 then break
       end
     end 
   end 
@@ -181,118 +169,74 @@ class Main
     puts "0 - Назад"
   end
 
-  def route_edit(route)
+  def create_route
+    puts "Введите первую станцию:"
+    first_station = select_from_collection(@stations)
+    puts "Введите вторую станцию:"
+    second_station = select_from_collection(@stations)
+    if first_station != second_station
+      @routes << Route.new(first_station, second_station)
+    else 
+      puts "Одна и та же станция не может быть началом и концом маршрута"
+    end
+  end 
+
+  def edit_route
     loop do
-      route_edit_menu
+      edit_route_menu
       key = gets.to_i
       case key 
-      when 1
-        puts "Введите название станции:"
-        name = gets.chomp
-        if @stations.has_key?(name)
-          @routes[route].add_station(@stations[name])
-          puts "Станция #{name} добавлена к маршруту #{route}"
-        else
-          puts "Введена неверная станция"
-        end
-      when 2
-        puts "Введите название станции:"
-        name = gets.chomp
-        if @stations.has_key?(name)
-          @routes[route].del_station(@stations[name])
-          puts "Станция #{name} удалена из маршрута #{route}"
-        else
-          puts "Введена неверная станция"
-        end
-      when 0
-        break 
+        when 1 then add_station
+        when 2 then del_station
+        when 0 then break
       end
     end 
   end
 
-  def route_edit_menu
+  def show_routes_stations
+    route = select_from_collection(@routes)
+    puts "Cписок станций маршрута:"
+    show_collection route.stations
+  end 
+
+  def appoint_route
+    train = select_from_collection(@trains)
+    route = select_from_collection(@routes)
+    train.route(route)
+    puts "Поезду #{train} назначен маршрут #{route.to_s}"
+  end
+  
+  def edit_route_menu
     puts "1 - Добавить станцию"
     puts "2 - Удалить станцию"
     puts "0 - Назад"
   end
 
-  def get_train
-    puts "Доступные поезда: "
-    @trains.each {|key, value| puts key}
-    puts "Введите номер поезд: "
-    train = gets.chomp
-    if @trains.has_key?(train)
-      return train 
-    else 
-      puts "Введен неверный номер поезда" 
-    end
+  def add_station
+    route = select_from_collection(@routes)
+    station = select_from_collection(@stations)
+    route.add_station(station)
   end 
 
-  def get_route
-    puts "Доступные маршруты: "
-    @routes.each {|key, value| puts key}
-    puts "Введите маршрут: "
-    route = gets.chomp
-    if @routes.has_key?(route)
-      return route
-    else 
-      puts "Введен неверный маршрут"
+  def del_station
+    route = select_from_collection(@routes)
+    station = select_from_collection(@stations)
+    route.del_station(station)
+  end 
+
+  def show_collection(collection)
+    collection.each.with_index(1) do |item, index|
+      puts "#{index} #{item}"
     end
   end
-
-  def get_station
-    puts "Доступные станции: "
-    @stations.each {|key, value| puts key}
-    puts "Введите станцию: "
-    station = gets.chomp
-    if @stations.has_key?(station)
-      return station
-    else 
-      puts "Введена неверная станция"
-    end
-  end
-
+  
+  def select_from_collection(collection)
+    show_collection(collection)
+    index = gets.to_i - 1
+    return if index.negative?
+    collection[index]
+  end 
+  
 end
 
-x = Main.new
-
-# wc1 = CargoWagon.new
-# wc2 = CargoWagon.new
-# wc3 = CargoWagon.new
-
-# wp1 = PassengerWagon.new
-# wp2 = PassengerWagon.new
-# wp3 = PassengerWagon.new
-
-# train_p1 = PassengerTrain.new("001")
-# train_p2 = PassengerTrain.new("002")
-# train_p3 = PassengerTrain.new("003")
-
-# train_c1 = CargoTrain.new("001")
-# train_c2 = CargoTrain.new("002")
-# train_c3 = CargoTrain.new("003")
-
-# station1 = Station.new("St1")
-# station2 = Station.new("St2")
-# station3 = Station.new("St3")
-# station4 = Station.new("St4")
-# station5 = Station.new("St5")
-
-# route1 = Route.new(station1, station2)
-# puts route1.show_stations
-
-# train_p1.add_wagon(wc1)
-# train_p1.add_wagon(wp1)
-# puts train_p1.show_wagons
-
-# - Создавать станции +
-# - Создавать поезда +
-# - Создавать маршруты и управлять станциями в нем (добавлять, удалять) +
-
-# - Назначать маршрут поезду +
-# - Добавлять вагоны к поезду
-# - Отцеплять вагоны от поезда
-# - Перемещать поезд по маршруту вперед и назад
-
-# - Просматривать список станций +
-# - Просматривать список поездов на станции +
+Main.new

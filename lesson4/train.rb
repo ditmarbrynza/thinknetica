@@ -25,14 +25,8 @@ class Train
 
   def del_wagon(wagon)
     return unless @speed.zero?
-    return unless wagon_counter > 1
     @wagons.delete(wagon)
   end
-
-  def wagon_counter
-    @wagons.size()
-  end
-
 
   def route(route)
     @route = route
@@ -55,7 +49,6 @@ class Train
   end
 
   def current_station
-    puts "текущая станция: #{@route.stations[@current_station].name}"
     @route.stations[@current_station]
   end
 
@@ -67,10 +60,8 @@ class Train
     @route.stations[@current_station - 1] if @current_station.positive?
   end
 
-  def show_wagons
-    @wagons.each do |wagon|
-      puts "#{wagon}"
-    end
+  def to_s
+    number
   end
 
 end

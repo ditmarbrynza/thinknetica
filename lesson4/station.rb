@@ -8,8 +8,7 @@ class Station
   end
 
   def take_train(train)
-    @trains << train #объект поезд пишется в массив
-    puts "#{train.number} прибывает на станцию #{self.name}"
+    @trains << train
   end
 
   def trains_by_type(type)
@@ -18,7 +17,10 @@ class Station
 
   def send_train(train)
     @trains.delete(train)
-    puts "#{train.number} отправляется со станции #{self.name}"
+  end
+
+  def to_s
+    name
   end
 
 end

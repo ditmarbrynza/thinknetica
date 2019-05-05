@@ -15,10 +15,8 @@ class Route
     @stations.delete(station)
   end
 
-  def show_stations
-    @stations.each do |station|
-      puts station.name
-    end
+  def to_s
+    [stations.first, stations.last].join(' - ')
   end
 
 end
