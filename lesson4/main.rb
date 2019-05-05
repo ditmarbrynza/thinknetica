@@ -69,8 +69,7 @@ class Main
   def show_station_trains
     station = select_from_collection(@stations)
     puts "Поезда на станции #{station}:"
-    station.trains
-    #attention
+    puts station.trains
   end
 
   def trains_management
@@ -129,14 +128,12 @@ class Main
     train = select_from_collection(@trains)
     train.move_forward
     puts "Поезд #{train.number} прибывает на станцию #{train.current_station}"
-    #attention
   end
 
   def move_back
     train = select_from_collection(@trains)
     train.move_back
     puts "Поезд #{train.number} прибывает на станцию #{train.current_station}"
-    #attention
   end 
 
   def train_management_menu
