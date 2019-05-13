@@ -1,5 +1,8 @@
-class Train 
+require_relative 'manufacturer'
 
+class Train 
+  include Manufacturer
+  
   attr_reader :number, :wagons, :speed
   attr_writer :route
 
