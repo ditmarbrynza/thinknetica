@@ -1,14 +1,19 @@
+require_relative 'instance_counter'
+
 class Station
+  include InstanceCounter
 
   attr_reader :name, :trains
 
   def self.all
-    @name
+    @all ||= []
   end
 
   def initialize(name)
     @name = name
     @trains = []
+    self.class.all << self
+    register_instance
   end
 
   def take_train(train)

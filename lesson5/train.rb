@@ -1,7 +1,9 @@
 require_relative 'manufacturer'
+require_relative 'instance_counter'
 
 class Train 
   include Manufacturer
+  include InstanceCounter
   
   attr_reader :number, :wagons, :speed
   attr_writer :route
@@ -10,6 +12,22 @@ class Train
     @number = number
     @wagons = []
     @speed = 0
+    self.class.all << self
+    register_instance
+  end
+
+  def self.all
+    @all ||= []
+  end 
+
+  def self.find(number)
+    self.all.each do |train| 
+      if train.number == number
+        return train 
+      elsif train == self.all.last && train.number != number
+        return nil
+      end
+    end
   end
 
   def gas(speed)
