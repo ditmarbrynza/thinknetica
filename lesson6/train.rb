@@ -8,6 +8,8 @@ class Train
   attr_reader :number, :wagons, :speed
   attr_writer :route
 
+  NUMBER_FORMAT = /^[a-zA-Z0-9]{3}-?[a-zA-Z0-9]{2}$/
+
   def self.all
     @all ||= {}
   end
@@ -16,14 +18,32 @@ class Train
     @number = number
     @wagons = []
     @speed = 0
+    validate!
     self.class.all[number] = self
     register_instance
   end
 
 
-
+  # Релизовать проверку на формат номера поезда. 
+  # Допустимый формат: три буквы или цифры в любом порядке, 
+  # необязательный дефис (может быть, а может нет) и еще 
+  # 2 буквы или цифры после дефиса.
+  
   def self.find(number)
     self.all[number]
+  end
+
+  def validate!
+    raise "Номер поезда не может быть пустым" if @number == ""
+    raise "Номер поезда должен быть строкой" if !@number.is_a?(String) 
+    raise "Номер поезда не соответствует формату" if @number !~ NUMBER_FORMAT 
+  end
+
+  def valid?
+    validate!
+    true 
+  rescue 
+    false
   end
 
   def gas(speed)

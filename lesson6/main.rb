@@ -100,6 +100,11 @@ class Main
     puts "Введите номер поезда:"
     number = gets.chomp
     @trains << train_type.new(number)
+    rescue RuntimeError 
+      puts "Попробуйте ввести заново:"
+      retry
+    ensure
+    puts "Создан поезд c номером #{number}"
   end
 
   def train_management

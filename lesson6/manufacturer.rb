@@ -12,12 +12,4 @@ module Manufacturer
 
   attr_accessor :manufacturer
 
-  # def manufacturer=(title)
-  #   @manufacturer = title
-  # end 
-
-  # def manufacturer
-  #   @manufacturer
-  # end
-
 end

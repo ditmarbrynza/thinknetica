@@ -12,8 +12,21 @@ class Station
   def initialize(name)
     @name = name
     @trains = []
+    validate!
     self.class.all << self
     register_instance
+  end
+
+  def validate!
+    raise "Название станции не должно быть пустым" if @name == ""
+    raise "Название станции должно быть строкой" if !@name.is_a?(String)
+  end 
+
+  def valid?
+    validate!
+    true
+  rescue
+    false
   end
 
   def take_train(train)
