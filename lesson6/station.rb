@@ -3,6 +3,9 @@ require_relative 'instance_counter'
 class Station
   include InstanceCounter
 
+  EMPTY_TITLE = "Название станции не должно быть пустым"
+  TITLE_STRING = "Название станции должно быть строкой"
+
   attr_reader :name, :trains
 
   def self.all
@@ -16,11 +19,6 @@ class Station
     self.class.all << self
     register_instance
   end
-
-  def validate!
-    raise "Название станции не должно быть пустым" if @name == ""
-    raise "Название станции должно быть строкой" if !@name.is_a?(String)
-  end 
 
   def valid?
     validate!
@@ -44,5 +42,12 @@ class Station
   def to_s
     name
   end
+
+  private 
+
+  def validate!
+    raise EMPTY_TITLE if @name == ""
+    raise TITLE_STRING unless @name.is_a?(String)
+  end 
 
 end

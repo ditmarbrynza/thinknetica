@@ -2,18 +2,16 @@ require_relative 'instance_counter'
 
 class Route
   include InstanceCounter
+  
+  INVALID_FIRST_STATION = "1-я станция должна быть объектом типа станция"
+  INVALID_LAST_STATION = "Последняя станция должна быть объектом типа станция"
 
   attr_reader :stations
 
   def initialize(first_station, last_station)
-    validate!(first_station, last_station)
     @stations = [first_station, last_station]
+    validate!
     register_instance
-  end
-
-  def validate!(first_station, last_station)
-    raise "1-я станция должна быть объектом типа станция" if !first_station.is_a?(Station)
-    raise "Последняя станция должна быть объектом типа станция" if !last_station.is_a?(Station)
   end
 
   def valid?
@@ -34,6 +32,13 @@ class Route
 
   def to_s
     [stations.first, stations.last].join(' - ')
+  end
+
+  private 
+
+  def validate!
+    raise INVALID_FIRST_STATION unless @stations.first.is_a?(Station)
+    raise INVALID_LAST_STATION unless @stations.last.is_a?(Station)
   end
 
 end

@@ -5,10 +5,14 @@ class Train
   include Manufacturer
   include InstanceCounter
 
+  EMPTY_NUMBER = "Номер поезда не может быть пустым"
+  NUMBER_STRING = "Номер поезда должен быть строкой"
+  INVALID_NUMBER = "Номер поезда не соответствует формату"
+
   attr_reader :number, :wagons, :speed
   attr_writer :route
 
-  NUMBER_FORMAT = /^[a-zA-Z0-9]{3}-?[a-zA-Z0-9]{2}$/
+  NUMBER_FORMAT = /^[a-z0-9]{3}-?[a-z0-9]{2}$/i
 
   def self.all
     @all ||= {}
@@ -31,12 +35,6 @@ class Train
   
   def self.find(number)
     self.all[number]
-  end
-
-  def validate!
-    raise "Номер поезда не может быть пустым" if @number == ""
-    raise "Номер поезда должен быть строкой" if !@number.is_a?(String) 
-    raise "Номер поезда не соответствует формату" if @number !~ NUMBER_FORMAT 
   end
 
   def valid?
@@ -99,6 +97,14 @@ class Train
 
   def to_s
     number
+  end
+
+  private 
+
+  def validate!
+    raise EMPTY_NUMBER if @number == ""
+    raise NUMBER_STRING unless @number.is_a?(String) 
+    raise INVALID_NUMBER if @number !~ NUMBER_FORMAT 
   end
 
 end
