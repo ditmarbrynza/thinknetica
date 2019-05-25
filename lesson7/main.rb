@@ -13,6 +13,7 @@ class Main
     @stations = []
     @routes = []
     @trains = []
+    test
     main_menu
   end 
 
@@ -73,7 +74,7 @@ class Main
   def show_station_trains
     station = select_from_collection(@stations)
     puts "Поезда на станции #{station}:"
-    puts station.trains
+    station.print_trains { |train| puts "Номер поезда: #{train.number}, тип поезда: #{train.type}, количество вагонов: #{train.wagons.length}" }
   end
 
   def trains_management
@@ -116,6 +117,9 @@ class Main
       when 2 then del_wagon
       when 3 then move_forward
       when 4 then move_back
+      when 5 then print_wagons
+      when 6 then occupy_places
+      when 7 then occupy_value
       when 0 then break
       end
     end 
@@ -123,8 +127,17 @@ class Main
 
   def add_wagon
     train = select_from_collection(@trains)
-    train.add_wagon(PassengerWagon.new) if train.attachable_wagon?(PassengerWagon.new)
-    train.add_wagon(CargoWagon.new) if train.attachable_wagon?(CargoWagon.new)
+    number = train.wagons.length + 1
+    if train.is_a?(PassengerTrain)
+      puts "Введите общее количество мест вагона:"
+      places = gets.to_i
+      train.add_wagon(PassengerWagon.new(number, places))
+    elsif train.is_a?(CargoTrain)
+      puts "Введите общий объем вагона:"
+      volume = gets.to_i
+      train.add_wagon(CargoWagon.new(number, volume))
+    end
+
   end
 
   def del_wagon
@@ -145,11 +158,43 @@ class Main
     puts "Поезд #{train.number} прибывает на станцию #{train.current_station}"
   end 
 
+  def print_wagons
+    train = select_from_collection(@trains)
+    if train.is_a?(PassengerTrain)
+      train.print_wagons { |wagon| puts "Номер вагона: #{wagon.number}, тип вагона: #{wagon.type}, свободных мест #{wagon.free_places}, занятых мест #{wagon.occupied_places}"}
+    elsif train.is_a?(CargoTrain)
+      train.print_wagons { |wagon| puts "Номер вагона: #{wagon.number}, тип вагона: #{wagon.type}, свободного объема #{wagon.free_value}, занятого объема #{wagon.occupied_value}"}
+    end
+  end
+
+  def occupy_places
+    puts "Выберите поезд: "
+    train = select_from_collection(@trains)
+    puts "Выберите вагон: "
+    wagon = select_from_collection(train.wagons)
+    wagon.occupy_places
+    puts "Осталось свободно мест #{wagon.free_places}"
+  end
+
+  def occupy_value
+    puts "Выберите поезд: "
+    train = select_from_collection(@trains)
+    puts "Выберите вагон: "
+    wagon = select_from_collection(train.wagons)
+    puts "Введите объем: "
+    value = gets.to_i
+    wagon.occupy_value(value)
+    puts "Осталось свободного объема #{wagon.free_value}"
+  end
+
   def train_management_menu
     puts "1 - Добавить вагон к поезду"
     puts "2 - Отцепить вагон от поезда"
     puts "3 - Перемещать поезд по маршруту вперед"
     puts "4 - Перемещать поезд по маршруту назад"
+    puts "5 - Вывести список вагонов поезда"
+    puts "6 - Занять место в вагоне"
+    puts "7 - Занять объем в вагоне"
     puts "0 - Назад"
   end
 
@@ -209,7 +254,7 @@ class Main
     train = select_from_collection(@trains)
     route = select_from_collection(@routes)
     train.route = route
-    puts "Поезду #{train} назначен маршрут #{route.to_s}"
+    puts "Поезду #{train} назначен маршрут #{route}"
   end
   
   def edit_route_menu
@@ -242,7 +287,54 @@ class Main
     return if index.negative?
     collection[index]
   end 
+
+  def test 
+    st1 = Station.new('Minsk')
+    st2 = Station.new('Brest')
+    st3 = Station.new('Grodno')
+    @stations << st1
+    @stations << st2
+    @stations << st3
+
+    route1 = Route.new(st1, st2)
+    route1.add_station(st3)
+    @routes << route1
+
+    tr1 = PassengerTrain.new('111-11')
+    tr2 = PassengerTrain.new('111-22')
+    tr3 = CargoTrain.new('111-33')
+    tr4 = CargoTrain.new('111-44')
+
+    @trains << tr1
+    @trains << tr2
+    @trains << tr3
+    @trains << tr4
+
+    tr1.route = route1
+    tr2.route = route1
+    tr3.route = route1
+    tr4.route = route1
+
+    # пассажирский поезд
+    wg1 = PassengerWagon.new(1, 133)
+    wg2 = PassengerWagon.new(2, 100)
+    wg3 = PassengerWagon.new(3, 132)
+    wg4 = PassengerWagon.new(4, 129)
+
+    tr1.add_wagon(wg1)
+    tr1.add_wagon(wg2)
+    tr1.add_wagon(wg3)
+    tr1.add_wagon(wg4)
+
+    # грузовой поезд
+    wg5 = CargoWagon.new(1, 500)
+    wg6 = CargoWagon.new(2, 500)
+    tr3.add_wagon(wg5)
+    tr3.add_wagon(wg6)
+    
+  end
   
 end
 
 Main.new
+

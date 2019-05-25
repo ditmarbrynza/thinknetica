@@ -4,4 +4,8 @@ class PassengerTrain < Train
     wagon.is_a?(PassengerWagon)
   end
 
+  def type
+    type = "Пассажирский"
+  end
+
 end

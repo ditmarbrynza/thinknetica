@@ -4,4 +4,8 @@ class CargoTrain < Train
     wagon.is_a?(CargoWagon)
   end
 
+  def type
+    type = "Грузовой"
+  end
+
 end

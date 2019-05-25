@@ -27,12 +27,6 @@ class Train
     register_instance
   end
 
-
-  # Релизовать проверку на формат номера поезда. 
-  # Допустимый формат: три буквы или цифры в любом порядке, 
-  # необязательный дефис (может быть, а может нет) и еще 
-  # 2 буквы или цифры после дефиса.
-  
   def self.find(number)
     self.all[number]
   end
@@ -97,6 +91,10 @@ class Train
 
   def to_s
     number
+  end
+
+  def print_wagons(&block)
+    @wagons.each { |wagon| yield(wagon) }
   end
 
   private 

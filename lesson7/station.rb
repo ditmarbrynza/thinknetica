@@ -43,11 +43,15 @@ class Station
     name
   end
 
+  def print_trains(&block)
+    @trains.each { |train| yield(train) }
+  end
+
   private 
 
   def validate!
     raise EMPTY_TITLE if @name == ""
     raise TITLE_STRING unless @name.is_a?(String)
-  end 
+  end
 
 end
