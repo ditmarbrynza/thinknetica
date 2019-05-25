@@ -118,8 +118,7 @@ class Main
       when 3 then move_forward
       when 4 then move_back
       when 5 then print_wagons
-      when 6 then occupy_places
-      when 7 then occupy_value
+      when 6 then occupy_volume
       when 0 then break
       end
     end 
@@ -130,8 +129,8 @@ class Main
     number = train.wagons.length + 1
     if train.is_a?(PassengerTrain)
       puts "Введите общее количество мест вагона:"
-      places = gets.to_i
-      train.add_wagon(PassengerWagon.new(number, places))
+      volume = gets.to_i
+      train.add_wagon(PassengerWagon.new(number, volume))
     elsif train.is_a?(CargoTrain)
       puts "Введите общий объем вагона:"
       volume = gets.to_i
@@ -161,30 +160,31 @@ class Main
   def print_wagons
     train = select_from_collection(@trains)
     if train.is_a?(PassengerTrain)
-      train.print_wagons { |wagon| puts "Номер вагона: #{wagon.number}, тип вагона: #{wagon.type}, свободных мест #{wagon.free_places}, занятых мест #{wagon.occupied_places}"}
+      train.print_wagons { |wagon| puts "Номер вагона: #{wagon.number}, тип вагона: #{wagon.type}, свободных мест #{wagon.free_volume}, занятых мест #{wagon.occupied_volume}"}
     elsif train.is_a?(CargoTrain)
-      train.print_wagons { |wagon| puts "Номер вагона: #{wagon.number}, тип вагона: #{wagon.type}, свободного объема #{wagon.free_value}, занятого объема #{wagon.occupied_value}"}
+      train.print_wagons { |wagon| puts "Номер вагона: #{wagon.number}, тип вагона: #{wagon.type}, свободного объема #{wagon.free_volume}, занятого объема #{wagon.occupied_volume}"}
     end
   end
 
-  def occupy_places
+  def occupy_volume
     puts "Выберите поезд: "
     train = select_from_collection(@trains)
     puts "Выберите вагон: "
     wagon = select_from_collection(train.wagons)
-    wagon.occupy_places
-    puts "Осталось свободно мест #{wagon.free_places}"
-  end
+    
+    if wagon.class == CargoWagon
+      puts "Введите объем: "
+      volume = gets.to_i
+      wagon.occupy_volume(volume)
+    elsif wagon.class == PassengerWagon
+      wagon.occupy_volume
+    end
 
-  def occupy_value
-    puts "Выберите поезд: "
-    train = select_from_collection(@trains)
-    puts "Выберите вагон: "
-    wagon = select_from_collection(train.wagons)
-    puts "Введите объем: "
-    value = gets.to_i
-    wagon.occupy_value(value)
-    puts "Осталось свободного объема #{wagon.free_value}"
+  rescue RuntimeError => e 
+    puts "#{e}, попробуйте еще раз."
+    retry
+  ensure
+    puts "Осталось свободного места:  #{wagon.free_volume}"
   end
 
   def train_management_menu
@@ -193,8 +193,7 @@ class Main
     puts "3 - Перемещать поезд по маршруту вперед"
     puts "4 - Перемещать поезд по маршруту назад"
     puts "5 - Вывести список вагонов поезда"
-    puts "6 - Занять место в вагоне"
-    puts "7 - Занять объем в вагоне"
+    puts "6 - Занять место или объем в вагоне"
     puts "0 - Назад"
   end
 
