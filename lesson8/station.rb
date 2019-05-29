@@ -47,7 +47,7 @@ class Station
     @trains.each { |train| yield(train) }
   end
 
-  private 
+  private
 
   def validate!
     raise EMPTY_TITLE if @name == ""

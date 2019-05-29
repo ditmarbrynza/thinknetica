@@ -15,7 +15,7 @@ class Main
     @trains = []
     test
     main_menu
-  end 
+  end
 
   def main_menu
     loop do
@@ -29,7 +29,7 @@ class Main
     end
   end
 
-  private 
+  private
   #все ниже методы приватные, т.е. могут вызываться только интерфейсом программы, юзер не должен к ним иметь доступ на прямую.
   #private а не protected потому, что они не наследуются и не должны быть видны в подклассах
 
@@ -43,13 +43,13 @@ class Main
     loop do
       stations_management_menu
       key = gets.to_i
-      case key 
+      case key
       when 1 then create_station
       when 2 then show_stations
       when 3 then show_station_trains
       when 0 then break
-      end 
-    end 
+      end
+    end
   end
 
   def stations_management_menu
@@ -58,7 +58,7 @@ class Main
     puts "3 - Просмотреть список поездов на станции"
     puts "0 - Выход"
   end
-  
+
   def create_station
     puts "Введите название станции: "
     name = gets.chomp
@@ -78,17 +78,17 @@ class Main
   end
 
   def trains_management
-    loop do 
+    loop do
       trains_management_menu
       key = gets.to_i
-      case key 
+      case key
       when 1 then create_train(PassengerTrain)
       when 2 then create_train(CargoTrain)
       when 3 then train_management
       when 0 then break
       end
     end
-  end 
+  end
 
   def trains_management_menu
     puts "1 - Создать пассажирский поезд"
@@ -101,7 +101,7 @@ class Main
     puts "Введите номер поезда:"
     number = gets.chomp
     @trains << train_type.new(number)
-  rescue RuntimeError => e 
+  rescue RuntimeError => e
     puts "#{e}, попробуйте еще раз."
     retry
   ensure
@@ -112,7 +112,7 @@ class Main
     loop do
       train_management_menu
       key = gets.to_i
-      case key 
+      case key
       when 1 then add_wagon
       when 2 then del_wagon
       when 3 then move_forward
@@ -121,7 +121,7 @@ class Main
       when 6 then occupy_volume
       when 0 then break
       end
-    end 
+    end
   end
 
   def add_wagon
@@ -143,8 +143,8 @@ class Main
     train = select_from_collection(@trains)
     wagon = select_from_collection(train.wagons)
     train.del_wagon(wagon)
-  end 
-    
+  end
+
   def move_forward
     train = select_from_collection(@trains)
     train.move_forward
@@ -155,7 +155,7 @@ class Main
     train = select_from_collection(@trains)
     train.move_back
     puts "Поезд #{train.number} прибывает на станцию #{train.current_station}"
-  end 
+  end
 
   def print_wagons
     train = select_from_collection(@trains)
@@ -171,7 +171,7 @@ class Main
     train = select_from_collection(@trains)
     puts "Выберите вагон: "
     wagon = select_from_collection(train.wagons)
-    
+
     if wagon.class == CargoWagon
       puts "Введите объем: "
       volume = gets.to_i
@@ -180,7 +180,7 @@ class Main
       wagon.occupy_volume
     end
 
-  rescue RuntimeError => e 
+  rescue RuntimeError => e
     puts "#{e}, попробуйте еще раз."
     retry
   ensure
@@ -198,9 +198,9 @@ class Main
   end
 
   def routes_management
-    loop do 
+    loop do
       routes_management_menu
-      key = gets.to_i 
+      key = gets.to_i
       case key
       when 1 then create_route
       when 2 then edit_route
@@ -208,8 +208,8 @@ class Main
       when 4 then appoint_route
       when 0 then break
       end
-    end 
-  end 
+    end
+  end
 
   def routes_management_menu
     puts "1 - Создать маршрут"
@@ -226,28 +226,28 @@ class Main
     second_station = select_from_collection(@stations)
     if first_station != second_station
       @routes << Route.new(first_station, second_station)
-    else 
+    else
       puts "Одна и та же станция не может быть началом и концом маршрута"
     end
-  end 
+  end
 
   def edit_route
     loop do
       edit_route_menu
       key = gets.to_i
-      case key 
+      case key
       when 1 then add_station
       when 2 then del_station
       when 0 then break
       end
-    end 
+    end
   end
 
   def show_routes_stations
     route = select_from_collection(@routes)
     puts "Cписок станций маршрута:"
     show_collection route.stations
-  end 
+  end
 
   def appoint_route
     train = select_from_collection(@trains)
@@ -255,7 +255,7 @@ class Main
     train.route = route
     puts "Поезду #{train} назначен маршрут #{route}"
   end
-  
+
   def edit_route_menu
     puts "1 - Добавить станцию"
     puts "2 - Удалить станцию"
@@ -266,28 +266,28 @@ class Main
     route = select_from_collection(@routes)
     station = select_from_collection(@stations)
     route.add_station(station)
-  end 
+  end
 
   def del_station
     route = select_from_collection(@routes)
     station = select_from_collection(@stations)
     route.del_station(station)
-  end 
+  end
 
   def show_collection(collection)
     collection.each.with_index(1) do |item, index|
       puts "#{index} #{item}"
     end
   end
-  
+
   def select_from_collection(collection)
     show_collection(collection)
     index = gets.to_i - 1
     return if index.negative?
     collection[index]
-  end 
+  end
 
-  def test 
+  def test
     st1 = Station.new('Minsk')
     st2 = Station.new('Brest')
     st3 = Station.new('Grodno')
@@ -330,9 +330,9 @@ class Main
     wg6 = CargoWagon.new(2, 500)
     tr3.add_wagon(wg5)
     tr3.add_wagon(wg6)
-    
+
   end
-  
+
 end
 
 Main.new

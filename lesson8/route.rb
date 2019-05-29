@@ -2,7 +2,7 @@ require_relative 'instance_counter'
 
 class Route
   include InstanceCounter
-  
+
   INVALID_FIRST_STATION = "1-я станция должна быть объектом типа станция"
   INVALID_LAST_STATION = "Последняя станция должна быть объектом типа станция"
 
@@ -34,7 +34,7 @@ class Route
     [stations.first, stations.last].join(' - ')
   end
 
-  private 
+  private
 
   def validate!
     raise INVALID_FIRST_STATION unless @stations.first.is_a?(Station)

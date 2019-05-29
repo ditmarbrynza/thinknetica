@@ -33,8 +33,8 @@ class Train
 
   def valid?
     validate!
-    true 
-  rescue 
+    true
+  rescue
     false
   end
 
@@ -97,12 +97,12 @@ class Train
     @wagons.each { |wagon| yield(wagon) }
   end
 
-  private 
+  private
 
   def validate!
     raise EMPTY_NUMBER if @number == ""
-    raise NUMBER_STRING unless @number.is_a?(String) 
-    raise INVALID_NUMBER if @number !~ NUMBER_FORMAT 
+    raise NUMBER_STRING unless @number.is_a?(String)
+    raise INVALID_NUMBER if @number !~ NUMBER_FORMAT
   end
 
 end

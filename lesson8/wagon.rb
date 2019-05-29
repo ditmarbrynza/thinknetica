@@ -15,7 +15,7 @@ class Wagon
     @occupied_volume = 0
     validate!
   end
-  
+
   def occupy_volume(volume)
     raise NOT_ENOUGH_SPACE if volume > free_volume
     raise NOT_ENOUGH_SPACE if free_volume == 0
@@ -39,7 +39,7 @@ class Wagon
 
   def validate!
     raise NOT_INTEGER_VOLUME unless @volume.is_a?(Integer)
-    raise NEGATIVE_VOLUME if @volume.negative? 
+    raise NEGATIVE_VOLUME if @volume.negative?
   end
 
 end

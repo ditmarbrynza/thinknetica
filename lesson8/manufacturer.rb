@@ -2,13 +2,13 @@ module Manufacturer
 
   def set_manufacturer(title)
     self.manufacturer = title
-  end 
+  end
 
   def get_manufacturer
     self.manufacturer
   end
 
-  protected 
+  protected
 
   attr_accessor :manufacturer
 
