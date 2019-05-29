@@ -5,7 +5,7 @@ require_relative 'manufacturer'
 class Wagon
   include Manufacturer
 
-  attr_reader :number, :type
+  attr_reader :number, :type, :occupied_volume
 
   NOT_ENOUGH_SPACE = 'Недостаточно места'
   NOT_INTEGER_VOLUME = 'Значение не может быть строкой'
@@ -20,14 +20,10 @@ class Wagon
 
   def occupy_volume(volume)
     raise NOT_ENOUGH_SPACE if volume > free_volume
-    raise NOT_ENOUGH_SPACE if free_volume == 0
+    raise NOT_ENOUGH_SPACE if free_volume.zero?
     raise NEGATIVE_VOLUME if volume.negative?
 
     @occupied_volume += volume
-  end
-
-  def occupied_volume
-    @occupied_volume
   end
 
   def free_volume
