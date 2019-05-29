@@ -1,12 +1,12 @@
-class PassengerWagon < Wagon
+# frozen_string_literal: true
 
+class PassengerWagon < Wagon
   def initialize(number, volume)
     super(number, volume)
-    @type = "Пассажирский"
+    @type = 'Пассажирский'
   end
 
   def occupy_volume
     super(1)
   end
-
 end

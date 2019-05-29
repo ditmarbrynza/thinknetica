@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'manufacturer'
 
 class Wagon
@@ -5,9 +7,9 @@ class Wagon
 
   attr_reader :number, :type
 
-  NOT_ENOUGH_SPACE = "Недостаточно места"
-  NOT_INTEGER_VOLUME = "Значение не может быть строкой"
-  NEGATIVE_VOLUME = "Значение не может быть отрицательным"
+  NOT_ENOUGH_SPACE = 'Недостаточно места'
+  NOT_INTEGER_VOLUME = 'Значение не может быть строкой'
+  NEGATIVE_VOLUME = 'Значение не может быть отрицательным'
 
   def initialize(number, volume)
     @number = number
@@ -20,6 +22,7 @@ class Wagon
     raise NOT_ENOUGH_SPACE if volume > free_volume
     raise NOT_ENOUGH_SPACE if free_volume == 0
     raise NEGATIVE_VOLUME if volume.negative?
+
     @occupied_volume += volume
   end
 
@@ -41,5 +44,4 @@ class Wagon
     raise NOT_INTEGER_VOLUME unless @volume.is_a?(Integer)
     raise NEGATIVE_VOLUME if @volume.negative?
   end
-
 end

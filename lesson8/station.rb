@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 require_relative 'instance_counter'
 
 class Station
   include InstanceCounter
 
-  EMPTY_TITLE = "Название станции не должно быть пустым"
-  TITLE_STRING = "Название станции должно быть строкой"
+  EMPTY_TITLE = 'Название станции не должно быть пустым'
+  TITLE_STRING = 'Название станции должно быть строкой'
 
   attr_reader :name, :trains
 
@@ -50,8 +52,7 @@ class Station
   private
 
   def validate!
-    raise EMPTY_TITLE if @name == ""
+    raise EMPTY_TITLE if @name == ''
     raise TITLE_STRING unless @name.is_a?(String)
   end
-
 end

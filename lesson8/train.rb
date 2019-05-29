@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'manufacturer'
 require_relative 'instance_counter'
 
@@ -5,9 +7,9 @@ class Train
   include Manufacturer
   include InstanceCounter
 
-  EMPTY_NUMBER = "Номер поезда не может быть пустым"
-  NUMBER_STRING = "Номер поезда должен быть строкой"
-  INVALID_NUMBER = "Номер поезда не соответствует формату"
+  EMPTY_NUMBER = 'Номер поезда не может быть пустым'
+  NUMBER_STRING = 'Номер поезда должен быть строкой'
+  INVALID_NUMBER = 'Номер поезда не соответствует формату'
 
   attr_reader :number, :wagons, :speed
   attr_writer :route
@@ -49,11 +51,13 @@ class Train
   def add_wagon(wagon)
     return unless @speed.zero?
     return unless attachable_wagon?(wagon)
+
     @wagons << wagon
   end
 
   def del_wagon(wagon)
     return unless @speed.zero?
+
     @wagons.delete(wagon)
   end
 
@@ -65,6 +69,7 @@ class Train
 
   def move_forward
     return unless next_station
+
     current_station.send_train(self)
     next_station.take_train(self)
     @current_station += 1
@@ -72,6 +77,7 @@ class Train
 
   def move_back
     return unless previous_station
+
     current_station.send_train(self)
     previous_station.take_train(self)
     @current_station -= 1
@@ -100,9 +106,8 @@ class Train
   private
 
   def validate!
-    raise EMPTY_NUMBER if @number == ""
+    raise EMPTY_NUMBER if @number == ''
     raise NUMBER_STRING unless @number.is_a?(String)
     raise INVALID_NUMBER if @number !~ NUMBER_FORMAT
   end
-
 end

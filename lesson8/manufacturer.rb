@@ -1,5 +1,6 @@
-module Manufacturer
+# frozen_string_literal: true
 
+module Manufacturer
   def set_manufacturer(title)
     self.manufacturer = title
   end
@@ -11,5 +12,4 @@ module Manufacturer
   protected
 
   attr_accessor :manufacturer
-
 end

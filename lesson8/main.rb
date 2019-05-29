@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'wagon'
 require_relative 'cargo_wagon'
 require_relative 'passenger_wagon'
@@ -8,7 +10,6 @@ require_relative 'station'
 require_relative 'route'
 
 class Main
-
   def initialize
     @stations = []
     @routes = []
@@ -30,13 +31,11 @@ class Main
   end
 
   private
-  #все ниже методы приватные, т.е. могут вызываться только интерфейсом программы, юзер не должен к ним иметь доступ на прямую.
-  #private а не protected потому, что они не наследуются и не должны быть видны в подклассах
 
   def show_main_menu
-    puts "1 - Управление станциями"
-    puts "2 - Управление поездами"
-    puts "3 - Управление маршрутами"
+    puts '1 - Управление станциями'
+    puts '2 - Управление поездами'
+    puts '3 - Управление маршрутами'
   end
 
   def stations_management
@@ -53,28 +52,30 @@ class Main
   end
 
   def stations_management_menu
-    puts "1 - Создать станцию"
-    puts "2 - Просмотреть список станций"
-    puts "3 - Просмотреть список поездов на станции"
-    puts "0 - Выход"
+    puts '1 - Создать станцию'
+    puts '2 - Просмотреть список станций'
+    puts '3 - Просмотреть список поездов на станции'
+    puts '0 - Выход'
   end
 
   def create_station
-    puts "Введите название станции: "
+    puts 'Введите название станции: '
     name = gets.chomp
     @stations << Station.new(name)
     puts "Создана станция #{name}"
   end
 
   def show_stations
-    puts "Список станций: "
+    puts 'Список станций: '
     show_collection(@stations)
   end
 
   def show_station_trains
     station = select_from_collection(@stations)
     puts "Поезда на станции #{station}:"
-    station.print_trains { |train| puts "Номер поезда: #{train.number}, тип поезда: #{train.type}, количество вагонов: #{train.wagons.length}" }
+    station.print_trains do |train|
+      puts "Номер поезда: #{train.number}, тип поезда: #{train.type}, количество вагонов: #{train.wagons.length}"
+    end
   end
 
   def trains_management
@@ -91,14 +92,14 @@ class Main
   end
 
   def trains_management_menu
-    puts "1 - Создать пассажирский поезд"
-    puts "2 - Создать грузовой поезд"
-    puts "3 - Управлять поездом"
-    puts "0 - Назад"
+    puts '1 - Создать пассажирский поезд'
+    puts '2 - Создать грузовой поезд'
+    puts '3 - Управлять поездом'
+    puts '0 - Назад'
   end
 
   def create_train(train_type)
-    puts "Введите номер поезда:"
+    puts 'Введите номер поезда:'
     number = gets.chomp
     @trains << train_type.new(number)
   rescue RuntimeError => e
@@ -128,11 +129,11 @@ class Main
     train = select_from_collection(@trains)
     number = train.wagons.length + 1
     if train.is_a?(PassengerTrain)
-      puts "Введите общее количество мест вагона:"
+      puts 'Введите общее количество мест вагона:'
       volume = gets.to_i
       train.add_wagon(PassengerWagon.new(number, volume))
     elsif train.is_a?(CargoTrain)
-      puts "Введите общий объем вагона:"
+      puts 'Введите общий объем вагона:'
       volume = gets.to_i
       train.add_wagon(CargoWagon.new(number, volume))
     end
@@ -160,20 +161,24 @@ class Main
   def print_wagons
     train = select_from_collection(@trains)
     if train.is_a?(PassengerTrain)
-      train.print_wagons { |wagon| puts "Номер вагона: #{wagon.number}, тип вагона: #{wagon.type}, свободных мест #{wagon.free_volume}, занятых мест #{wagon.occupied_volume}"}
-    elsif train.is_a?(CargoTrain)
-      train.print_wagons { |wagon| puts "Номер вагона: #{wagon.number}, тип вагона: #{wagon.type}, свободного объема #{wagon.free_volume}, занятого объема #{wagon.occupied_volume}"}
+      train.print_wagons do |wagon| 
+        puts "Номер вагона: #{wagon.number}, тип вагона: #{wagon.type}, свободных мест #{wagon.free_volume}, занятых мест #{wagon.occupied_volume}"
+      end
+      elsif train.is_a?(CargoTrain)
+      train.print_wagons do |wagon| 
+        puts "Номер вагона: #{wagon.number}, тип вагона: #{wagon.type}, свободного объема #{wagon.free_volume}, занятого объема #{wagon.occupied_volume}"
+      end
     end
   end
 
   def occupy_volume
-    puts "Выберите поезд: "
+    puts 'Выберите поезд: '
     train = select_from_collection(@trains)
-    puts "Выберите вагон: "
+    puts 'Выберите вагон: '
     wagon = select_from_collection(train.wagons)
 
     if wagon.class == CargoWagon
-      puts "Введите объем: "
+      puts 'Введите объем: '
       volume = gets.to_i
       wagon.occupy_volume(volume)
     elsif wagon.class == PassengerWagon
@@ -188,13 +193,13 @@ class Main
   end
 
   def train_management_menu
-    puts "1 - Добавить вагон к поезду"
-    puts "2 - Отцепить вагон от поезда"
-    puts "3 - Перемещать поезд по маршруту вперед"
-    puts "4 - Перемещать поезд по маршруту назад"
-    puts "5 - Вывести список вагонов поезда"
-    puts "6 - Занять место или объем в вагоне"
-    puts "0 - Назад"
+    puts '1 - Добавить вагон к поезду'
+    puts '2 - Отцепить вагон от поезда'
+    puts '3 - Перемещать поезд по маршруту вперед'
+    puts '4 - Перемещать поезд по маршруту назад'
+    puts '5 - Вывести список вагонов поезда'
+    puts '6 - Занять место или объем в вагоне'
+    puts '0 - Назад'
   end
 
   def routes_management
@@ -212,22 +217,22 @@ class Main
   end
 
   def routes_management_menu
-    puts "1 - Создать маршрут"
-    puts "2 - Редактировать маршрут"
-    puts "3 - Просмотреть список станций маршрута"
-    puts "4 - Назначить маршрут поезду"
-    puts "0 - Назад"
+    puts '1 - Создать маршрут'
+    puts '2 - Редактировать маршрут'
+    puts '3 - Просмотреть список станций маршрута'
+    puts '4 - Назначить маршрут поезду'
+    puts '0 - Назад'
   end
 
   def create_route
-    puts "Введите первую станцию:"
+    puts 'Введите первую станцию:'
     first_station = select_from_collection(@stations)
-    puts "Введите вторую станцию:"
+    puts 'Введите вторую станцию:'
     second_station = select_from_collection(@stations)
     if first_station != second_station
       @routes << Route.new(first_station, second_station)
     else
-      puts "Одна и та же станция не может быть началом и концом маршрута"
+      puts 'Одна и та же станция не может быть началом и концом маршрута'
     end
   end
 
@@ -245,7 +250,7 @@ class Main
 
   def show_routes_stations
     route = select_from_collection(@routes)
-    puts "Cписок станций маршрута:"
+    puts 'Cписок станций маршрута:'
     show_collection route.stations
   end
 
@@ -257,9 +262,9 @@ class Main
   end
 
   def edit_route_menu
-    puts "1 - Добавить станцию"
-    puts "2 - Удалить станцию"
-    puts "0 - Назад"
+    puts '1 - Добавить станцию'
+    puts '2 - Удалить станцию'
+    puts '0 - Назад'
   end
 
   def add_station
@@ -284,6 +289,7 @@ class Main
     show_collection(collection)
     index = gets.to_i - 1
     return if index.negative?
+
     collection[index]
   end
 
@@ -314,7 +320,6 @@ class Main
     tr3.route = route1
     tr4.route = route1
 
-    # пассажирский поезд
     wg1 = PassengerWagon.new(1, 133)
     wg2 = PassengerWagon.new(2, 100)
     wg3 = PassengerWagon.new(3, 132)
@@ -325,14 +330,12 @@ class Main
     tr1.add_wagon(wg3)
     tr1.add_wagon(wg4)
 
-    # грузовой поезд
     wg5 = CargoWagon.new(1, 500)
     wg6 = CargoWagon.new(2, 500)
     tr3.add_wagon(wg5)
     tr3.add_wagon(wg6)
 
   end
-
 end
 
 Main.new

@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 require_relative 'instance_counter'
 
 class Route
   include InstanceCounter
 
-  INVALID_FIRST_STATION = "1-я станция должна быть объектом типа станция"
-  INVALID_LAST_STATION = "Последняя станция должна быть объектом типа станция"
+  INVALID_FIRST_STATION = '1-я станция должна быть объектом типа станция'
+  INVALID_LAST_STATION = 'Последняя станция должна быть объектом типа станция'
 
   attr_reader :stations
 
@@ -27,6 +29,7 @@ class Route
 
   def del_station(station)
     return if [@stations.first, @stations.last].include?(station)
+
     @stations.delete(station)
   end
 
@@ -40,5 +43,4 @@ class Route
     raise INVALID_FIRST_STATION unless @stations.first.is_a?(Station)
     raise INVALID_LAST_STATION unless @stations.last.is_a?(Station)
   end
-
 end
