@@ -137,7 +137,6 @@ class Main
       volume = gets.to_i
       train.add_wagon(CargoWagon.new(number, volume))
     end
-
   end
 
   def del_wagon
@@ -161,11 +160,11 @@ class Main
   def print_wagons
     train = select_from_collection(@trains)
     if train.is_a?(PassengerTrain)
-      train.print_wagons do |wagon| 
+      train.print_wagons do |wagon|
         puts "Номер вагона: #{wagon.number}, тип вагона: #{wagon.type}, свободных мест #{wagon.free_volume}, занятых мест #{wagon.occupied_volume}"
       end
-      elsif train.is_a?(CargoTrain)
-      train.print_wagons do |wagon| 
+    elsif train.is_a?(CargoTrain)
+      train.print_wagons do |wagon|
         puts "Номер вагона: #{wagon.number}, тип вагона: #{wagon.type}, свободного объема #{wagon.free_volume}, занятого объема #{wagon.occupied_volume}"
       end
     end
@@ -184,7 +183,6 @@ class Main
     elsif wagon.class == PassengerWagon
       wagon.occupy_volume
     end
-
   rescue RuntimeError => e
     puts "#{e}, попробуйте еще раз."
     retry
@@ -334,9 +332,7 @@ class Main
     wg6 = CargoWagon.new(2, 500)
     tr3.add_wagon(wg5)
     tr3.add_wagon(wg6)
-
   end
 end
 
 Main.new
-

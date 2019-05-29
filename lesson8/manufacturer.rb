@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
 module Manufacturer
-  def set_manufacturer(title)
+  def add_manufacturer(title)
     self.manufacturer = title
   end
 
-  def get_manufacturer
-    self.manufacturer
+  def info_manufacturer
+    manufacturer
   end
 
   protected

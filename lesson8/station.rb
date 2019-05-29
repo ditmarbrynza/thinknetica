@@ -45,7 +45,7 @@ class Station
     name
   end
 
-  def print_trains(&block)
+  def print_trains
     @trains.each { |train| yield(train) }
   end
 

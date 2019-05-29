@@ -12,9 +12,8 @@ class Train
   INVALID_NUMBER = 'Номер поезда не соответствует формату'
 
   attr_reader :number, :wagons, :speed
-  attr_writer :route
 
-  NUMBER_FORMAT = /^[a-z0-9]{3}-?[a-z0-9]{2}$/i
+  NUMBER_FORMAT = /^[a-z0-9]{3}-?[a-z0-9]{2}$/i.freeze
 
   def self.all
     @all ||= {}
@@ -30,7 +29,7 @@ class Train
   end
 
   def self.find(number)
-    self.all[number]
+    all[number]
   end
 
   def valid?
@@ -99,7 +98,7 @@ class Train
     number
   end
 
-  def print_wagons(&block)
+  def print_wagons
     @wagons.each { |wagon| yield(wagon) }
   end
 
