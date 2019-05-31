@@ -74,7 +74,8 @@ class Main
     station = select_from_collection(@stations)
     puts "Поезда на станции #{station}:"
     station.print_trains do |train|
-      puts "Номер поезда: #{train.number}, тип поезда: #{train.type}, количество вагонов: #{train.wagons.length}"
+      puts "Номер поезда: #{train.number}, тип поезда: #{train.type}, "\
+            "количество вагонов: #{train.wagons.length}"
     end
   end
 
@@ -161,11 +162,15 @@ class Main
     train = select_from_collection(@trains)
     if train.is_a?(PassengerTrain)
       train.print_wagons do |wagon|
-        puts "Номер вагона: #{wagon.number}, тип вагона: #{wagon.type}, свободных мест #{wagon.free_volume}, занятых мест #{wagon.occupied_volume}"
+        puts "Номер вагона: #{wagon.number}, тип вагона: #{wagon.type}, "\
+              "свободных мест #{wagon.free_volume}, "\
+              "занятых мест #{wagon.occupied_volume}"
       end
     elsif train.is_a?(CargoTrain)
       train.print_wagons do |wagon|
-        puts "Номер вагона: #{wagon.number}, тип вагона: #{wagon.type}, свободного объема #{wagon.free_volume}, занятого объема #{wagon.occupied_volume}"
+        puts "Номер вагона: #{wagon.number}, тип вагона: #{wagon.type}, "\
+        "свободного объема #{wagon.free_volume}, "\
+        "занятого объема #{wagon.occupied_volume}"
       end
     end
   end

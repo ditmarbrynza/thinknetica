@@ -13,7 +13,7 @@ class Train
 
   attr_reader :number, :wagons, :speed
 
-  NUMBER_FORMAT = /^[a-z0-9]{3}-?[a-z0-9]{2}$/i.freeze
+  NUMBER_FORMAT = /^[a-z0-9]{3}-?[a-z0-9]{2}$/i
 
   def self.all
     @all ||= {}

@@ -6,6 +6,6 @@ class PassengerTrain < Train
   end
 
   def type
-    type = 'Пассажирский'
+    'Пассажирский'
   end
 end

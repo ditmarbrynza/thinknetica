@@ -6,6 +6,6 @@ class CargoTrain < Train
   end
 
   def type
-    type = 'Грузовой'
+    'Грузовой'
   end
 end
