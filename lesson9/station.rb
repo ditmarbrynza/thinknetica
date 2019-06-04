@@ -1,9 +1,11 @@
 # frozen_string_literal: true
 
 require_relative 'instance_counter'
+require_relative 'accessors'
 
 class Station
   include InstanceCounter
+  include Accessors
 
   EMPTY_TITLE = 'Название станции не должно быть пустым'
   TITLE_STRING = 'Название станции должно быть строкой'
