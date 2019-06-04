@@ -1,22 +1,31 @@
 module Accessors
 
-  def self.attr_accessor_with_history
-    # Этот метод динамически создает геттеры и сеттеры для любого кол-ва
-    # атрибутов, при этом сеттер сохраняет все значения
-    # инстанс-переменной при изменении этого значения. 
+  WRONG_TYPE = "Тип переменной отличается от указанного"
+
+  def self.attr_accessor_with_history(*names)
+    names.each do |name|
+      var_name = "@#{name}".to_sym
+      define_method(name) { instance_variable_get(var_name) }
+
+      define_method("#{name}=".to_sym) do |value|
+        instance_variable_set(var_name, value)
+        instance_variable_get("@#{name}_arr") || instance_variable_set("@#{name}_arr", [])
+        instance_variable_get("@#{name}_arr") << value
+      end
+
+      define_method("#{name}_history".to_sym) { instance_variable_get("@#{name}_arr") }
+    end
   end 
 
-  <имя_атрибута>_history
- 
-  # который возвращает массив всех значений данной переменной.
+  def self.strong_attr_accessor(name, name_class)
+    var_name = "@#{name}".to_sym
+    define_method(name){ instance_variable_get(var_name) }
 
-  def self.strong_attr_accessor
-    #  который принимает имя атрибута и его класс. 
-    # При этом создается геттер и сеттер для одноименной 
-    # инстанс-переменной, но сеттер проверяет тип присваемоего
-    # значения. Если тип отличается от того, который указан вторым
-    # параметром, то выбрасывается исключение. 
-    # Если тип совпадает, то значение присваивается.
+    define_method("#{name}=".to_sym) do |value|
+      raise WRONG_TYPE unless value.is_a?(name_class)
+      instance_variable_set(var_name, value)
+    end
+    
   end
 
 end
