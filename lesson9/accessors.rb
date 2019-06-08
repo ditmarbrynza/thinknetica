@@ -15,11 +15,12 @@ module Accessors
 
         define_method("#{name}=".to_sym) do |value|
           instance_variable_set(var_name, value)
-          instance_variable_get("@#{name}_arr") || instance_variable_set("@#{name}_arr", [])
-          instance_variable_get("@#{name}_arr") << value
+          instance_variable_set("@#{name}_history", []) unless instance_variable_defined?("@#{name}_history") 
+          instance_variable_get("@#{name}_history") << instance_variable_get("@#{name}_history_old") if instance_variable_defined?("@#{name}_history_old") 
+          instance_variable_set("@#{name}_history_old", value) 
         end
 
-        define_method("#{name}_history".to_sym) { instance_variable_get("@#{name}_arr") }
+        define_method("#{name}_history".to_sym) { instance_variable_get("@#{name}_history") }
       end
     end 
 
