@@ -2,18 +2,20 @@
 
 require_relative 'manufacturer'
 require_relative 'instance_counter'
+require_relative 'validation'
 
 class Train
   include Manufacturer
   include InstanceCounter
-
-  EMPTY_NUMBER = 'Номер поезда не может быть пустым'
-  NUMBER_STRING = 'Номер поезда должен быть строкой'
-  INVALID_NUMBER = 'Номер поезда не соответствует формату'
+  include Validation
 
   attr_reader :number, :wagons, :speed
 
   NUMBER_FORMAT = /^[a-z0-9]{3}-?[a-z0-9]{2}$/i
+
+  validate :number, :presence 
+  validate :number, :format, NUMBER_FORMAT
+  validate :number, :type, String
 
   def self.all
     @all ||= {}
@@ -30,13 +32,6 @@ class Train
 
   def self.find(number)
     all[number]
-  end
-
-  def valid?
-    validate!
-    true
-  rescue RuntimeError
-    false
   end
 
   def gas(speed)
@@ -102,11 +97,4 @@ class Train
     @wagons.each { |wagon| yield(wagon) }
   end
 
-  private
-
-  def validate!
-    raise EMPTY_NUMBER if @number == ''
-    raise NUMBER_STRING unless @number.is_a?(String)
-    raise INVALID_NUMBER if @number !~ NUMBER_FORMAT
-  end
 end

@@ -297,46 +297,46 @@ class Main
   end
 
   def test
-    st1 = Station.new('Minsk')
-    st2 = Station.new('Brest')
-    st3 = Station.new('Grodno')
-    @stations << st1
-    @stations << st2
-    @stations << st3
+    # st1 = Station.new('Minsk')
+    # st2 = Station.new('Brest')
+    # st3 = Station.new('Grodno')
+    # @stations << st1
+    # @stations << st2
+    # @stations << st3
 
-    route1 = Route.new(st1, st2)
-    route1.add_station(st3)
-    @routes << route1
+    # route1 = Route.new(st1, st2)
+    # route1.add_station(st3)
+    # @routes << route1
 
-    tr1 = PassengerTrain.new('111-11')
-    tr2 = PassengerTrain.new('111-22')
-    tr3 = CargoTrain.new('111-33')
-    tr4 = CargoTrain.new('111-44')
+    # tr1 = PassengerTrain.new('111-11')
+    # tr2 = PassengerTrain.new('111-22')
+    # tr3 = CargoTrain.new('111-33')
+    # tr4 = CargoTrain.new('111-44')
 
-    @trains << tr1
-    @trains << tr2
-    @trains << tr3
-    @trains << tr4
+    # @trains << tr1
+    # @trains << tr2
+    # @trains << tr3
+    # @trains << tr4
 
-    tr1.route = route1
-    tr2.route = route1
-    tr3.route = route1
-    tr4.route = route1
+    # tr1.route = route1
+    # tr2.route = route1
+    # tr3.route = route1
+    # tr4.route = route1
 
-    wg1 = PassengerWagon.new(1, 133)
-    wg2 = PassengerWagon.new(2, 100)
-    wg3 = PassengerWagon.new(3, 132)
-    wg4 = PassengerWagon.new(4, 129)
+    # wg1 = PassengerWagon.new(1, 133)
+    # wg2 = PassengerWagon.new(2, 100)
+    # wg3 = PassengerWagon.new(3, 132)
+    # wg4 = PassengerWagon.new(4, 129)
 
-    tr1.add_wagon(wg1)
-    tr1.add_wagon(wg2)
-    tr1.add_wagon(wg3)
-    tr1.add_wagon(wg4)
+    # tr1.add_wagon(wg1)
+    # tr1.add_wagon(wg2)
+    # tr1.add_wagon(wg3)
+    # tr1.add_wagon(wg4)
 
-    wg5 = CargoWagon.new(1, 500)
-    wg6 = CargoWagon.new(2, 500)
-    tr3.add_wagon(wg5)
-    tr3.add_wagon(wg6)
+    # wg5 = CargoWagon.new(1, 500)
+    # wg6 = CargoWagon.new(2, 500)
+    # tr3.add_wagon(wg5)
+    # tr3.add_wagon(wg6)
   end
 end
 

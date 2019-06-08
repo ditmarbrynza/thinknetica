@@ -1,26 +1,24 @@
 # frozen_string_literal: true
 
 require_relative 'instance_counter'
+require_relative 'validation'
 
 class Route
   include InstanceCounter
-
-  INVALID_FIRST_STATION = '1-я станция должна быть объектом типа станция'
-  INVALID_LAST_STATION = 'Последняя станция должна быть объектом типа станция'
+  include Validation
 
   attr_reader :stations
+  attr_accessor :first, :last
+
+  validate :first, :type, Station
+  validate :last, :type, Station
 
   def initialize(first_station, last_station)
     @stations = [first_station, last_station]
+    @first = first_station
+    @last = last_station
     validate!
     register_instance
-  end
-
-  def valid?
-    validate!
-    true
-  rescue RuntimeError
-    false
   end
 
   def add_station(station)
@@ -37,10 +35,4 @@ class Route
     [stations.first, stations.last].join(' - ')
   end
 
-  private
-
-  def validate!
-    raise INVALID_FIRST_STATION unless @stations.first.is_a?(Station)
-    raise INVALID_LAST_STATION unless @stations.last.is_a?(Station)
-  end
 end

@@ -2,15 +2,17 @@
 
 require_relative 'instance_counter'
 require_relative 'accessors'
+require_relative 'validation'
 
 class Station
   include InstanceCounter
   include Accessors
-
-  EMPTY_TITLE = 'Название станции не должно быть пустым'
-  TITLE_STRING = 'Название станции должно быть строкой'
+  include Validation
 
   attr_reader :name, :trains
+
+  validate :name, :presence
+  validate :name, :type, String
 
   def self.all
     @all ||= []
@@ -22,13 +24,6 @@ class Station
     validate!
     self.class.all << self
     register_instance
-  end
-
-  def valid?
-    validate!
-    true
-  rescue RuntimeError
-    false
   end
 
   def take_train(train)
@@ -51,10 +46,4 @@ class Station
     @trains.each { |train| yield(train) }
   end
 
-  private
-
-  def validate!
-    raise EMPTY_TITLE if @name == ''
-    raise TITLE_STRING unless @name.is_a?(String)
-  end
 end
