@@ -2,20 +2,12 @@
 
 require_relative 'manufacturer'
 require_relative 'instance_counter'
-require_relative 'validation'
 
 class Train
   include Manufacturer
   include InstanceCounter
-  include Validation
 
   attr_reader :number, :wagons, :speed
-
-  NUMBER_FORMAT = /^[a-z0-9]{3}-?[a-z0-9]{2}$/i
-
-  validate :number, :presence 
-  validate :number, :format, NUMBER_FORMAT
-  validate :number, :type, String
 
   def self.all
     @all ||= {}

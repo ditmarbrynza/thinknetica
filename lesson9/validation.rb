@@ -22,7 +22,9 @@ module Validation
     
     def validate!
       self.class.validations.each do |validation|
-        send("validate_#{validation[:type]}", validation[:name], validation[:params])
+        value = instance_variable_get("@#{validation[:name]}")
+        method_name = "validate_#{validation[:type]}"
+        send(method_name, value, *validation[:params])
       end
     end 
 
@@ -35,17 +37,17 @@ module Validation
 
     private 
     
-    def validate_presence(name, params)
-      variable = instance_variable_get("@#{name}")
-      raise "Значение атрибута является пустой строкой" if variable == "" || variable.nil? 
+    def validate_presence(value)
+      raise "Значение атрибута является пустой строкой" if value == "" || value.nil? 
     end 
 
-    def validate_format(name, params)
-      raise "Значение атрибута не соответствует формату #{params[0]}" if instance_variable_get("@#{name}") !~ params[0]
+    def validate_format(value, format)
+      raise "Значение атрибута не соответствует формату #{format}" if value !~ format
     end 
 
-    def validate_type(name, params)
-      raise "Значение атрибута не соответствует классу #{params[0]}" unless instance_variable_get("@#{name}").is_a?(params[0])
+    def validate_type(value, type)
+      raise "Значение атрибута не соответствует классу #{type}" unless value.is_a?(type)
+      puts type
     end
 
   end
